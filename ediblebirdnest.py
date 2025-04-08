@@ -5,6 +5,10 @@ from ultralytics import YOLO
 from PIL import Image, ImageDraw, ImageFont
 import os
 import sys
+import torch
+print(f"PyTorch version: {torch.__version__}")
+x = torch.rand(5, 3)
+print(x)
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
