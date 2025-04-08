@@ -16,9 +16,16 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 @st.cache_resource
+@st.cache_resource
 def load_yolo_model():
     """Loads the YOLO model."""
     model_path = resource_path("best.pt")
+    try:
+        model = YOLO(model_path)
+        return model
+    except Exception as e:
+        st.error(f"Error loading YOLO model: {e}")
+        return None
     
 
 def process_yolo_image(image, model):
