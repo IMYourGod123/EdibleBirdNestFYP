@@ -117,8 +117,8 @@ def main():
         st.write("You can upload an image for analysis using the YOLO model.")
 
         image_paths = [
-            resource_path("images/images1.jpg"),
-            resource_path("images/images2.jpg")
+            resource_path("images1.jpg"),
+            resource_path("images2.jpeg")
         ]
         for path in image_paths:
             if os.path.exists(path):
