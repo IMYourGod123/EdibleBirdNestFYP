@@ -3,6 +3,6 @@ opencv-python
 ultralytics
 Pillow
 numpy
-torch==2.0.1  # Try a specific stable version
-torchvision==0.15.2  # Corresponding torchvision version
-torchaudio==2.0.2    # Corresponding torchaudio version
+torch==2.6.0
+torchvision
+torchaudio
