@@ -19,13 +19,7 @@ def resource_path(relative_path):
 def load_yolo_model():
     """Loads the YOLO model."""
     model_path = resource_path("best.pt")
-    try:
-        model = YOLO(model_path)
-        st.info(f"YOLO model loaded successfully from {model_path}")
-        return model
-    except Exception as e:
-        st.error(f"Error loading YOLO model: {e}")
-        return None
+    
 
 def process_yolo_image(image, model):
     """Processes a single image using the YOLO model."""
@@ -123,7 +117,7 @@ def main():
         for path in image_paths:
             if os.path.exists(path):
                 image = Image.open(path)
-                st.image(image, caption=os.path.basename(path), use_column_width=True)
+                st.image(image, caption=os.path.basename(path), use_container_width=True)
             else:
                 st.warning(f"Image not found: {path}")
 
@@ -139,14 +133,14 @@ def main():
         if uploaded_file is not None:
             try:
                 image = Image.open(uploaded_file).convert("RGB")
-                st.image(image, caption="Uploaded Image", use_column_width=True)
+                st.image(image, caption="Uploaded Image", use_container_width=True)
 
                 if st.button("Analyze Image"):
                     if yolo_model:
                         with st.spinner("Analyzing image..."):
                             processed_image = process_yolo_image(image, yolo_model)
                         st.subheader("Processed Image")
-                        st.image(processed_image, caption="Processed Image with YOLO Detection and Impurity Analysis", use_column_width=True)
+                        st.image(processed_image, caption="Processed Image with YOLO Detection and Impurity Analysis", use_container_width=True)
                     else:
                         st.error("YOLO model not loaded. Please check the logs.")
             except Exception as e:
