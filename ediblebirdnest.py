@@ -30,7 +30,6 @@ def load_yolo_model():
     except Exception as e:
         st.error(f"Error loading YOLO model: {e}")
         return None
-    
 
 def process_yolo_image(image, model):
     """Processes a single image using the YOLO model."""
@@ -109,17 +108,48 @@ def process_yolo_image(image, model):
         st.error(f"Error processing image: {e}")
         return image
 
+# Translations for English, Chinese, and Simplified Chinese
+translations = {
+    "English": {
+        "title": "AviNest Analyzer",
+        "homepage": "Welcome to AviNest Analyzer",
+        "yolo_analysis": "YOLO Image Analysis",
+        "upload_image": "Upload an image...",
+        "analyze_image": "Analyze Image",
+        "processed_image_caption": "Processed Image with YOLO Detection and Impurity Analysis",
+        "no_object_detected": "NO OBJECT DETECTED",
+        "about": "About",
+        "info": "This application is for demonstration purposes.",
+        "copyright": "© 2024 AviNest. All rights reserved."
+    },
+    "Chinese": {
+        "title": "AviNest分析器",
+        "homepage": "欢迎使用AviNest分析器",
+        "yolo_analysis": "YOLO图像分析",
+        "upload_image": "上传图像...",
+        "analyze_image": "分析图像",
+        "processed_image_caption": "经过YOLO检测和杂质分析的图像",
+        "no_object_detected": "未检测到物体",
+        "about": "关于",
+        "info": "此应用程序仅供演示使用。",
+        "copyright": "© 2024 AviNest。版权所有。"
+    }
+}
+
+# Main Function
 def main():
-    st.title("AviNest Analyzer")
+    lang = st.sidebar.selectbox("Language / 语言", ("English", "Chinese"))
+    t = translations[lang]
+
+    st.title(t["title"])
     st.sidebar.header("Navigation")
-    app_mode = st.sidebar.radio("Choose an option", ["Homepage", "YOLO Image Analysis"])
+    app_mode = st.sidebar.radio("Choose an option", [t["homepage"], t["yolo_analysis"]])
 
     yolo_model = load_yolo_model()
 
-    if app_mode == "Homepage":
-        st.header("Welcome to AviNest Analyzer")
-        st.write("This application uses YOLOv8 for edible bird's nest detection and impurity analysis.")
-        st.write("You can upload an image for analysis using the YOLO model.")
+    if app_mode == t["homepage"]:
+        st.header(t["homepage"])
+        st.write(t["info"])
 
         image_paths = [
             resource_path("images1.jpg"),
@@ -133,24 +163,24 @@ def main():
                 st.warning(f"Image not found: {path}")
 
         st.markdown("---")
-        st.subheader("About")
-        st.info("This application is for demonstration purposes.")
-        st.markdown("© 2024 AviNest. All rights reserved.")
+        st.subheader(t["about"])
+        st.info(t["info"])
+        st.markdown(t["copyright"])
 
-    elif app_mode == "YOLO Image Analysis":
-        st.header("YOLO Image Analysis")
-        uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "png", "jpeg"])
+    elif app_mode == t["yolo_analysis"]:
+        st.header(t["yolo_analysis"])
+        uploaded_file = st.file_uploader(t["upload_image"], type=["jpg", "png", "jpeg"])
 
         if uploaded_file is not None:
             try:
                 image = Image.open(uploaded_file).convert("RGB")
                 st.image(image, caption="Uploaded Image", use_container_width=True)
 
-                if st.button("Analyze Image"):
+                if st.button(t["analyze_image"]):
                     if yolo_model:
                         with st.spinner("Analyzing image..."):
                             processed_image = process_yolo_image(image, yolo_model)
-                        st.subheader("Processed Image")
+                        st.subheader(t["processed_image_caption"])
                         st.image(processed_image, caption="Processed Image with YOLO Detection and Impurity Analysis", use_container_width=True)
                     else:
                         st.error("YOLO model not loaded. Please check the logs.")
